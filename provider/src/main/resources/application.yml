@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: provider-service
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+external:
+  echo: http://localhost:8082/v1/echo_test
+
+logging:
+  level:
+    root: debug
