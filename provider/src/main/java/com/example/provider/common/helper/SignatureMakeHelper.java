@@ -17,8 +17,8 @@ public final class SignatureMakeHelper {
   /**
    * 샘플 프로젝트 resources 디렉토리에 pem 파일 생성하기 위한 경로로 로컬 경로 설정
    */
-  private static final String PRIVATE_KEY_PATH = "/Users/seok/IdeaProjects/work/digital-signature/provider/src/main/resources/privateKey.pem";
-  private static final String PUBLIC_KEY_PATH = "/Users/seok/IdeaProjects/work/digital-signature/receiver/src/main/resources/publicKey.pem";
+  private static final String PRIVATE_KEY_PATH = "privateKey.pem";
+  private static final String PUBLIC_KEY_PATH = "publicKey.pem";
   private static final String PRIVATE_KEY = "PRIVATE KEY";
   private static final String ALGORITHM = "Ed25519";
 
@@ -32,14 +32,11 @@ public final class SignatureMakeHelper {
       String publicKeyToPem = convertPublicKeyToPem(keyPair.getPublic());
       log.info("{}", publicKeyToPem);
 
-      FileUtils.movePemToFile(privateKeyToPem, PRIVATE_KEY_PATH);
-      FileUtils.movePemToFile(publicKeyToPem, PUBLIC_KEY_PATH);
+      FileUtils.saveResourceToClassPath(PRIVATE_KEY_PATH, privateKeyToPem);
+      FileUtils.saveResourceToClassPath(PUBLIC_KEY_PATH, publicKeyToPem);
 
     } catch (NoSuchAlgorithmException e) {
       log.error("알고리즘 확인 필요: {}", e.getMessage());
-      throw new RuntimeException(e);
-    } catch (IOException e) {
-      log.info("파일 생성 실패: {}", e.getMessage());
       throw new RuntimeException(e);
     }
   }

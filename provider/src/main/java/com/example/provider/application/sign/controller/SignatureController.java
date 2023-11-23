@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.NoSuchAlgorithmException;
-
 
 @Slf4j
 @RestController
@@ -25,7 +23,7 @@ public class SignatureController {
    * @return
    */
   @PostMapping("/sign")
-  public ResponseEntity<?> sign() {
+  public ResponseEntity<Void> sign() {
 
     signatureMakeHelper.generateKeyPair();
 

@@ -11,11 +11,11 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ToString
 @ConfigurationProperties(prefix = "encrypt")
 public class PublicKeyPath {
-  private final String path;
+  private final String name;
 
   @ConstructorBinding
-  public PublicKeyPath(String path) {
-    this.path = path;
-    log.info("{}", path);
+  public PublicKeyPath(String name) {
+    this.name = name;
+    log.info("{}", name);
   }
 }

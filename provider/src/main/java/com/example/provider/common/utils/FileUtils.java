@@ -5,14 +5,18 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public final class FileUtils {
@@ -20,40 +24,43 @@ public final class FileUtils {
     // Utility 클래스이므로 생성자를 private으로 설정하여 인스턴스화 방지
   }
 
-  public static void movePemToFile(String pemContent, String finalPath) throws IOException {
-    Path finalFilePath = Paths.get(finalPath);
+  public static void saveResourceToClassPath(String resourceName, String content) {
+    // 현재 날짜를 기준으로 년월일 형식의 폴더 경로 생성
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    String folderPath = dateFormat.format(new Date());
 
-    log.info("finalFilePath : {}", finalFilePath);
-    // 디렉토리가 존재하는지 확인하고, 없으면 생성합니다.
-    Path directories = Files.createDirectories(finalFilePath.getParent());
-    log.info("directories : {}", directories);
+    // 'resources' 폴더 내의 경로 생성
+    File folder = new File(folderPath);
 
-    // PEM 내용을 파일에 작성합니다. 파일이 없으면 생성합니다.
-    Files.write(finalFilePath, pemContent.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-  }
-
-  public static String readSystemResource(final String location) {
-    try {
-      Path path = Paths.get(ClassLoader.getSystemResource(location).toURI());
-      return readResource(path);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException("Error reading system resource: " + location, e);
+    if (!folder.exists()) {
+      folder.mkdirs(); // 폴더가 존재하지 않으면 생성
     }
-  }
 
-  public static Resource getResource(final String location) {
-    return new FileSystemResource(location);
-  }
+    // 파일 경로 생성
+    String filePath = folderPath + File.separator + resourceName;
 
-  public static Resource getClassPathResource(final String location) {
-    return new ClassPathResource(location);
-  }
-
-  private static String readResource(final Path path) {
-    try {
-      return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+    try (FileWriter writer = new FileWriter(filePath)) {
+      writer.write(content);
+      log.info("File saved to: {}", filePath);
     } catch (IOException e) {
-      throw new UncheckedIOException("Error reading file: " + path, e);
+      log.error("IOException {}", e.getMessage());
+      e.printStackTrace();
+      // 예외 처리
     }
+  }
+
+  public static Resource readFileAsResource(String resourceName) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    String folderPath = dateFormat.format(new Date());
+
+    String filePath = folderPath + File.separator + resourceName;
+    File file = new File(filePath);
+
+    if (!file.exists()) {
+      log.error("File not found: {}", filePath);
+      return null; // 파일이 존재하지 않는 경우
+    }
+
+    return new FileSystemResource(file);
   }
 }

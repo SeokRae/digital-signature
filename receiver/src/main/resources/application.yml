@@ -8,7 +8,7 @@ spring:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
 encrypt:
-  path: publicKey.pem
+  name: publicKey.pem
 
 logging:
   level:

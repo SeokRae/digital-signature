@@ -1,7 +1,7 @@
 package com.example.receiver.common.helper;
 
 import com.example.receiver.application.echo.controller.EchoMessage;
-import com.example.receiver.common.utils.FileUtils;
+import com.example.receiver.common.utils.FileSupport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 class SignatureVerifyPemHandlerTest {
+  private static final String PRIVATE_KEY_PEM = "privateKey.pem";
+  private static final String PUBLIC_KEY_PEM = "publicKey.pem";
   private ObjectMapper objectMapper;
   private String signatureHeader;
   private String message;
@@ -31,9 +33,9 @@ class SignatureVerifyPemHandlerTest {
 
   @Order(1)
   @Test
-  void testCase1() {
+  void fileExistsTest() {
 
-    Resource resource = FileUtils.getClassPathResource("privateKey.pem");
+    Resource resource = FileSupport.readFileAsTestResource(PRIVATE_KEY_PEM);
     assertThat(resource.exists()).isTrue();
 
   }
@@ -42,7 +44,7 @@ class SignatureVerifyPemHandlerTest {
   @Test
   void makeSignature() throws JsonProcessingException {
     // given
-    Resource resource = FileUtils.getClassPathResource("privateKey.pem");
+    Resource resource = FileSupport.readFileAsTestResource(PRIVATE_KEY_PEM);
     PrivateKey privateKey = SignatureMakeHandler.readPrivateByPem(resource);
 
     EchoMessage echoMessage = new EchoMessage(Instant.now().toEpochMilli());
@@ -60,7 +62,7 @@ class SignatureVerifyPemHandlerTest {
   @Test
   void verify() {
     // given
-    Resource publicKeyResource = FileUtils.getClassPathResource("publicKey.pem");
+    Resource publicKeyResource = FileSupport.readFileAsTestResource(PUBLIC_KEY_PEM);
 
     // when
     boolean verifiedSignature = new SignatureVerifyPemHandler.SignatureVerificationBuilder(publicKeyResource)
