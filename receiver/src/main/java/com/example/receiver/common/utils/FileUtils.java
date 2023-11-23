@@ -5,6 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
@@ -12,33 +13,46 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Slf4j
 public final class FileUtils {
   private FileUtils() {}
 
-  public static String readSystemResource(final String location) {
-    try {
-      Path path = Paths.get(ClassLoader.getSystemResource(location).toURI());
-      return readResource(path);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException("Error reading system resource: " + location, e);
+  public static Resource readFileAsResource(String resourceName) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    String folderPath = dateFormat.format(new Date());
+
+    String projectRootPath = new File(System.getProperty("user.dir")).getPath();
+
+    String filePath = folderPath + File.separator + resourceName;
+    File file = new File(projectRootPath, filePath);
+
+    log.info("{}", file.getAbsolutePath());
+    if (!file.exists()) {
+      log.error("File not found: {}", filePath);
+      return null; // 파일이 존재하지 않는 경우
     }
+
+    return new FileSystemResource(file);
   }
 
-  public static Resource getResource(final String location) {
-    return new FileSystemResource(location);
-  }
+  public static Resource readFileAsTestResource(String resourceName) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    String folderPath = dateFormat.format(new Date());
 
-  public static Resource getClassPathResource(final String location) {
-    return new ClassPathResource(location);
-  }
+    String projectRootPath = new File(System.getProperty("user.dir")).getParent();
 
-  private static String readResource(final Path path) {
-    try {
-      return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new UncheckedIOException("Error reading file: " + path, e);
+    String filePath = folderPath + File.separator + resourceName;
+    File file = new File(projectRootPath, filePath);
+
+    log.info("{}", file.getAbsolutePath());
+    if (!file.exists()) {
+      log.error("File not found: {}", filePath);
+      return null; // 파일이 존재하지 않는 경우
     }
+
+    return new FileSystemResource(file);
   }
 }

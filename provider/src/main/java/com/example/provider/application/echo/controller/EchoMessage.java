@@ -9,11 +9,17 @@ import lombok.ToString;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 에코 테스트용 DTO
+ */
 @Getter
 @ToString
 public class EchoMessage {
 
   private long timestamp;
+  /**
+   * 예상되지 않은 필드를 저장하기 위한 Map
+   */
   @JsonIgnore
   private final Map<String, Object> additionalProperties = new LinkedHashMap<>();
 

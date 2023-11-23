@@ -32,7 +32,10 @@ public class SignatureHandler {
 
   public SignatureHandler(PublicKeyPath publicKeyPath) {
     Security.addProvider(new BouncyCastleProvider());
-    this.publicKeyResource = FileUtils.getClassPathResource(publicKeyPath.getPath());
+    this.publicKeyResource = FileUtils.readFileAsResource(publicKeyPath.getName());
+    if(this.publicKeyResource == null) {
+      throw new IllegalArgumentException("Invalid public key path.");
+    }
     this.initializeVerifier();
   }
 
