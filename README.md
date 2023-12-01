@@ -72,3 +72,39 @@
 
    - **이해 증진**: PKI와 Ed25519의 작동 원리에 대한 이해를 높일 수 있습니다.
    - **보안성 평가**: 실제 환경에서의 Ed25519의 보안성과 효율성을 평가합니다.
+
+
+## 프로젝트 시나리오
+
+ 
+### Provider 프로젝트
+
+1. /v1/sign 호출하여 공개 키 및 개인 키 생성
+
+```bash
+curl --request POST \
+--url http://localhost:8081/v1/sign 
+```
+
+2. /v1/echo_test 호출하여 서명 생성 및 데이터 전송
+
+```bash
+curl --request POST \
+--url http://localhost:8081/v1/echo_test 
+```
+
+### Receiver 프로젝트
+
+provider 프로젝트에서 보낼 message를 privatekey로 signature 생성하여 헤더에 전송
+receiver 프로젝트에서는 publickey로 signature 검증하여 비즈니스 로직 처리
+
+```http request
+POST http://localhost:8082/v1/echo_test
+Content-Type: application/json
+signature: FB9jswpmXRrTCQ4TwaE9RP8rCSHA5H0eL6CELLjupTImojgpEADWjflY5C07Ld4SQOg8lYBnqAiqFDIIXg3iBw==
+
+{
+  "timestamp": 1701436594641,
+  "unexpected_field_20231201221634": "unexpectedValue"
+}
+```

@@ -31,8 +31,15 @@ public final class FileUtils {
 
     log.info("{}", file.getAbsolutePath());
     if (!file.exists()) {
-      log.error("File not found: {}", filePath);
-      return null; // 파일이 존재하지 않는 경우
+      File directory = new File(file.getParent());
+      if (!directory.exists()) {
+        directory.mkdirs(); // 폴더 생성
+      }
+      try {
+        file.createNewFile(); // 파일 생성
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     return new FileSystemResource(file);

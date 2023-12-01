@@ -1,8 +1,6 @@
 package com.example.receiver.core.config;
 
 
-import com.example.receiver.core.filter.SignatureAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,10 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
-
-  private final SignatureAuthenticationFilter signatureAuthenticationFilter;
 
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -36,15 +31,6 @@ public class SecurityConfiguration {
 //                .anonymous().disable() // 익명 사용자 허용하지 않음
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-    // 5. 인증 및 인가
-//    http
-//            .authorizeRequests()
-//            .antMatchers("/v1/echo_test").permitAll() // 공개 경로 설정
-//            .anyRequest().authenticated(); // 나머지 요청은 인증 필요;
-//
-//    http
-//            .addFilterBefore(signatureAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     // 6. CORS 설정
     http.cors();

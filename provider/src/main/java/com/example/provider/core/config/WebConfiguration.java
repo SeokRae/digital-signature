@@ -4,7 +4,6 @@ import com.example.provider.core.interceptor.LoggingRequestInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -50,14 +49,6 @@ public class WebConfiguration {
             .setReadTimeout(Duration.ofSeconds(15))
             .additionalMessageConverters(new MappingJackson2HttpMessageConverter())
             .additionalInterceptors(loggingRequestInterceptor())
-            .build();
-  }
-
-  @Bean
-  public OkHttpClient okHttpClient() {
-    return new OkHttpClient.Builder()
-            .connectTimeout(Duration.ofSeconds(5)) // 연결 타임아웃 설정
-            .readTimeout(Duration.ofSeconds(15))   // 읽기 타임아웃 설정
             .build();
   }
 }

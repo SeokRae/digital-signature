@@ -8,7 +8,6 @@ import com.example.provider.common.utils.FileUtils;
 import com.example.provider.core.props.ExternalUrlProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class EchoService {
             requestBody,
             EchoMessage.class
     );
-    if(!echoResponse.getStatusCode().is2xxSuccessful()) {
+    if (!echoResponse.getStatusCode().is2xxSuccessful()) {
       log.error("Echo API 호출 실패");
       throw new RuntimeException("Echo API 호출 실패");
     }
@@ -51,7 +50,6 @@ public class EchoService {
     return echoMessage;
   }
 
-  @NotNull
   private static MultiValueMap<String, String> makeHeaders(byte[] signature) {
     MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
     header.add(HttpHeaders.CONTENT_TYPE, "application/json");

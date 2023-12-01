@@ -32,7 +32,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
     implementation group: 'com.google.crypto.tink', name: 'tink', version: '1.11.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
     compileOnly 'org.projectlombok:lombok'
 
