@@ -1,4 +1,4 @@
-# Digital Signature 통신 구간의 클라이언트 프로젝트
+# Digital Signature 통신 구간의 Provider 프로젝트
 
 ## Provider 프로젝트 개요
 
