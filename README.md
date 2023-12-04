@@ -80,18 +80,28 @@
 ### Provider 프로젝트
 
 1. /v1/sign 호출하여 공개 키 및 개인 키 생성
-
-```bash
-curl --request POST \
---url http://localhost:8081/v1/sign 
-```
+   
+   ```bash
+   curl --request POST \
+   --url http://localhost:8081/v1/sign 
+   ```
 
 2. /v1/echo_test 호출하여 서명 생성 및 데이터 전송
+   - 당일 생성된 공개 키의 keyid(yyyyMMdd)를 헤더에 전송
+   
+   ```bash
+   curl --request POST \
+   --url http://localhost:8081/v1/echo_test 
+   ```
+   
+   - 특정 keyid를 기준으로 서명 생성 및 데이터 전송
 
-```bash
-curl --request POST \
---url http://localhost:8081/v1/echo_test 
-```
+   ```bash
+   curl --request POST \
+   --url http://localhost:8081/v1/echo_test \
+   --header 'Content-Type: application/x-www-form-urlencoded' \
+   --data keyId=20231204 
+   ```
 
 ### Receiver 프로젝트
 
