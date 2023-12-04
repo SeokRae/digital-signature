@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 @Getter
 @ToString
-@ConfigurationProperties(prefix = "keys")
+@ConfigurationProperties(prefix = "signature")
 public class PublicKeyPaths {
 
   private final List<PublicKeyPath> pairs;
