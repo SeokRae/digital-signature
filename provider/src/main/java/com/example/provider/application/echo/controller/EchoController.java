@@ -12,9 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
@@ -30,14 +28,21 @@ import java.util.Base64;
 public class EchoController {
 
   private final EchoService echoService;
+
+  /**
+   * curl --request POST --url http://localhost:8081/v1/echo_test --header 'Content-Type: application/x-www-form-urlencoded' --data keyId=20231204
+   * @param keyId 키 아이디로 관리를 검증하기 위한 값
+   * @return
+   */
   @PostMapping(path = "/echo_test")
-  public ResponseEntity<?> echo() {
+  public ResponseEntity<EchoMessage> echo(@RequestParam(required = false) String keyId) {
     // 요청 Body 생성
-    EchoMessage echoMessage = new EchoMessage(Instant.now().toEpochMilli());
+    EchoMessage echoMessage = new EchoMessage(Instant.now().toEpochMilli(), keyId);
     echoMessage.set(generateFieldName(), "unexpectedValue");
 
+    EchoMessage body = echoService.echoMessage(echoMessage);
     return ResponseEntity.ok()
-            .body(echoService.echoMessage(echoMessage));
+            .body(body);
   }
 
   private String generateFieldName() {

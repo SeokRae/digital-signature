@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import java.util.Map;
 public class EchoMessage {
 
   private long timestamp;
+  private String keyId;
   /**
    * 예상되지 않은 필드를 저장하기 위한 Map
    */
@@ -27,7 +30,12 @@ public class EchoMessage {
   }
 
   public EchoMessage(long timestamp) {
+    this(timestamp, new SimpleDateFormat("yyyyMMdd").format(new Date()));
+  }
+
+  public EchoMessage(long timestamp, String keyId) {
     this.timestamp = timestamp;
+    this.keyId = keyId;
   }
 
   @JsonAnyGetter
