@@ -1,8 +1,7 @@
 package com.example.receiver.core.handler;
 
 
-import com.example.receiver.common.utils.FileUtils;
-import com.example.receiver.core.props.PublicKeyPath;
+import com.example.receiver.common.helper.PublicKeyManager;
 import com.google.crypto.tink.subtle.Ed25519Verify;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -10,7 +9,6 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -28,20 +26,16 @@ import java.util.Base64;
 @Component
 public class SignatureHandler {
 
-  private final Resource publicKeyResource;
+  private final PublicKeyManager publicKeyManager;
 
-  public SignatureHandler(PublicKeyPath publicKeyPath) {
+  public SignatureHandler(PublicKeyManager publicKeyManager) {
     Security.addProvider(new BouncyCastleProvider());
-    this.publicKeyResource = FileUtils.readFileAsResource(publicKeyPath.getName());
-    if(this.publicKeyResource == null) {
-      throw new IllegalArgumentException("Invalid public key path.");
-    }
-    this.initializeVerifier();
+    this.publicKeyManager = publicKeyManager;
   }
 
-  public boolean verify(String signature, String message) {
+  public boolean verify(String keyId, String signature, String message) {
     try {
-      Ed25519Verify verifier = initializeVerifier();
+      Ed25519Verify verifier = initializeVerifier(keyId);
       log.info("signature : {}", signature);
       log.info("message : {}", message);
       byte[] signatureBytes = Base64.getDecoder().decode(signature);
@@ -54,8 +48,8 @@ public class SignatureHandler {
     }
   }
 
-  private Ed25519Verify initializeVerifier() {
-    try (final InputStream stream = publicKeyResource.getInputStream();
+  private Ed25519Verify initializeVerifier(String keyId) {
+    try (final InputStream stream = publicKeyManager.getPublicKey(keyId).getInputStream();
          final PEMParser pemParser = new PEMParser(new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)))) {
       final Object readObject = pemParser.readObject();
 

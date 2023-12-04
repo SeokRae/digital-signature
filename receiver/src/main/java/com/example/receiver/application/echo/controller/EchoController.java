@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EchoController {
 
   @PostMapping(path = "/echo_test")
-  public ResponseEntity<?> echo(@RequestBody EchoMessage echoMessage) {
+  public ResponseEntity<EchoMessage> echo(@RequestBody EchoMessage echoMessage) {
     log.info("echoMessage: {}", echoMessage);
     return ResponseEntity
             .ok()

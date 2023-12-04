@@ -21,18 +21,26 @@ public final class FileUtils {
   private FileUtils() {}
 
   public static Resource readFileAsResource(String resourceName) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    String folderPath = dateFormat.format(new Date());
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+//    String folderPath = dateFormat.format(new Date());
 
     String projectRootPath = new File(System.getProperty("user.dir")).getPath();
-
-    String filePath = folderPath + File.separator + resourceName;
+    log.info("projectRootPath: {}", projectRootPath);
+//    String filePath = folderPath + File.separator + resourceName;
+    String filePath = File.separator + resourceName;
     File file = new File(projectRootPath, filePath);
 
     log.info("{}", file.getAbsolutePath());
     if (!file.exists()) {
-      log.error("File not found: {}", filePath);
-      return null; // 파일이 존재하지 않는 경우
+      File directory = new File(file.getParent());
+      if (!directory.exists()) {
+        directory.mkdirs(); // 폴더 생성
+      }
+      try {
+        file.createNewFile(); // 파일 생성
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     return new FileSystemResource(file);

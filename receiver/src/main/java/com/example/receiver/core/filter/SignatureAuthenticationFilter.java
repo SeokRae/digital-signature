@@ -25,19 +25,21 @@ import java.io.UnsupportedEncodingException;
 @RequiredArgsConstructor
 public class SignatureAuthenticationFilter extends OncePerRequestFilter {
 
-  public static final String SIGNATURE = "signature";
+  private static final String KEY_ID = "key-id";
+  private static final String SIGNATURE = "signature";
   private final SignatureHandler signatureHandler;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(request);
+    String keyId = request.getHeader(KEY_ID);
     String signature = request.getHeader(SIGNATURE);
 
     filterChain.doFilter(requestWrapper, response);
 
     String body = getRequestBody(requestWrapper);
 
-    if (verifiedSignature(signature, body)) {
+    if (verifiedSignature(keyId, signature, body)) {
       log.info("Signature verified Good");
       Authentication auth = new UsernamePasswordAuthenticationToken("user", null, AuthorityUtils.NO_AUTHORITIES);
       SecurityContextHolder.getContext().setAuthentication(auth);
@@ -62,8 +64,8 @@ public class SignatureAuthenticationFilter extends OncePerRequestFilter {
     return " - ";
   }
 
-  private boolean verifiedSignature(String signature, String body) {
-    return signatureHandler.verify(signature, body);
+  private boolean verifiedSignature(String keyId, String signature, String body) {
+    return signatureHandler.verify(keyId, signature, body);
   }
 
 }

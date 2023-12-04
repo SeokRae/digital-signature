@@ -17,24 +17,28 @@ public class CustomLoggingFilter implements Filter {
     HttpServletRequest httpServletRequest = (HttpServletRequest) request;
     ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
 
+    logDivider();
     logRequest(requestWrapper);
 
     chain.doFilter(httpServletRequest, response);
 
+    logDivider();
     logResponse(response);
+    logDivider();
   }
 
   private void logRequest(ContentCachingRequestWrapper requestWrapper) {
-    logheaders(requestWrapper.getHeaderNames());
+    logHeaders(requestWrapper.getHeaderNames(), requestWrapper);
     log.info("Request URI: {}", requestWrapper.getRequestURI());
     log.info("Request Method: {}", requestWrapper.getMethod());
     log.info("Request Body: {}", new String(requestWrapper.getContentAsByteArray()));
   }
 
-  private void logheaders(Enumeration<String> headerNames) {
+  private void logHeaders(Enumeration<String> headerNames, HttpServletRequest request) {
     while (headerNames.hasMoreElements()) {
       String headerName = headerNames.nextElement();
-      log.info("Header {} {} ", headerName, headerName);
+      String headerValue = request.getHeader(headerName);
+      log.info("Header {}: {}", headerName, headerValue);
     }
   }
 
@@ -42,5 +46,9 @@ public class CustomLoggingFilter implements Filter {
     log.info("Response ContentType: {}", response.getContentType());
     log.info("Response CharacterSet: {}", response.getCharacterEncoding());
     log.info("Response Body: {}", response);
+  }
+
+  private void logDivider() {
+    log.info("--------------------------------------------------");
   }
 }
