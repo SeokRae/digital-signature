@@ -6,6 +6,7 @@ import com.example.provider.common.helper.RestTemplateHelper;
 import com.example.provider.common.helper.SignatureHelper;
 import com.example.provider.common.utils.FileUtils;
 import com.example.provider.core.props.ExternalUrlProperties;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +43,7 @@ public class EchoService {
 
     byte[] payload = requestBody.getBytes(StandardCharsets.UTF_8);
     byte[] signature = SignatureHelper.createSignature(privateKey, payload);
-    String keyId = dateFormat.format(new Date());
+    String keyId = StringUtils.isNotBlank(echoMessage.getKeyId()) ? echoMessage.getKeyId() : dateFormat.format(new Date());
 
     try {
       ResponseEntity<EchoMessage> echoResponse = restTemplateHelper.postRestTemplate(
