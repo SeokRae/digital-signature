@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Base64;
 
 @Slf4j
 @Component
@@ -53,9 +54,7 @@ public final class SignatureHelper {
       Signature signature = Signature.getInstance(ALGORITHM);
       signature.initSign(privateKey);
       signature.update(message);
-      byte[] sign = signature.sign();
-      log.info("sign.data : {}, sign.length : {}", new String(sign, StandardCharsets.UTF_8), sign.length);
-      return sign;
+      return signature.sign();
     } catch (NoSuchAlgorithmException e) {
       log.error("NoSuchAlgorithmException {}", e.getMessage());
       throw new RuntimeException(e);

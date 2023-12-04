@@ -21,12 +21,13 @@ public final class FileUtils {
   private FileUtils() {}
 
   public static Resource readFileAsResource(String resourceName) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    String folderPath = dateFormat.format(new Date());
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+//    String folderPath = dateFormat.format(new Date());
 
     String projectRootPath = new File(System.getProperty("user.dir")).getPath();
-
-    String filePath = folderPath + File.separator + resourceName;
+    log.info("projectRootPath: {}", projectRootPath);
+//    String filePath = folderPath + File.separator + resourceName;
+    String filePath = File.separator + resourceName;
     File file = new File(projectRootPath, filePath);
 
     log.info("{}", file.getAbsolutePath());

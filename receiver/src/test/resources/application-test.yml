@@ -11,9 +11,10 @@ keys:
   pairs:
     - id: 20231123
       path: 20231123/publicKey.pem
-    - id: 20231204
-      path: 20231204/publicKey.pem
+    - id: 20231201
+      path: 20231201/publicKey.pem
+
 
 logging:
   level:
-    root: info
+    root: debug
