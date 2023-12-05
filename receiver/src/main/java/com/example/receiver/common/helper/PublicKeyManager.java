@@ -34,4 +34,8 @@ public class PublicKeyManager {
     log.info("resource: {} {}", id, resource);
     return resource;
   }
+
+  public boolean absent(String keyId) {
+    return !publicKeyResources.containsKey(keyId);
+  }
 }

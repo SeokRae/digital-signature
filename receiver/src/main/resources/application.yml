@@ -11,6 +11,8 @@ signature:
   pairs:
     - id: 20231123
       path: 20231123/publicKey.pem
+    - id: 20231204
+      path: 20231204/publicKey.pem
     - id: 20231205
       path: 20231205/publicKey.pem
 
