@@ -19,30 +19,32 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     @Override
     public ClientHttpResponse intercept(@NotNull HttpRequest request, byte @NotNull [] body, ClientHttpRequestExecution execution) throws IOException {
         logRequest(request, body);
+
         ClientHttpResponse response = execution.execute(request, body);
+
         logResponse(response);
         return response;
     }
 
     private void logRequest(HttpRequest request, byte[] body) {
         if (log.isInfoEnabled()) {
-            log.debug("===========================request begin=============================================");
-            log.debug("URI         : {}", request.getURI());
-            log.debug("Method      : {}", request.getMethod());
-            log.debug("Headers     : {}", request.getHeaders());
-            log.debug("Request body: {}", new String(body, StandardCharsets.UTF_8));
-            log.debug("==========================request end================================================");
+            log.info("===========================request begin=============================================");
+            log.info("URI         : {}", request.getURI());
+            log.info("Method      : {}", request.getMethod());
+            log.info("Headers     : {}", request.getHeaders());
+            log.info("Request body: {}", new String(body, StandardCharsets.UTF_8));
+            log.info("==========================request end================================================");
         }
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
         if (log.isInfoEnabled() && response != null) {
-            log.debug("============================response begin==========================================");
-            log.debug("Status code  : {}", response.getStatusCode());
-            log.debug("Status text  : {}", response.getStatusText());
-            log.debug("Headers      : {}", response.getHeaders());
-            log.debug("Response body: {}", StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()));
-            log.debug("============================response end============================================");
+            log.info("============================response begin==========================================");
+            log.info("Status code  : {}", response.getStatusCode());
+            log.info("Status text  : {}", response.getStatusText());
+            log.info("Headers      : {}", response.getHeaders());
+//            log.debug("Response body: {}", StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()));
+            log.info("============================response end============================================");
         }
     }
 }

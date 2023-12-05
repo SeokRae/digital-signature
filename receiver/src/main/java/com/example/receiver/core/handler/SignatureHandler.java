@@ -33,6 +33,10 @@ public class SignatureHandler {
     this.publicKeyManager = publicKeyManager;
   }
 
+  public boolean absent(String keyId) {
+    return publicKeyManager.absent(keyId);
+  }
+
   public boolean verify(String keyId, String signature, String message) {
     try {
       Ed25519Verify verifier = initializeVerifier(keyId);
@@ -63,7 +67,7 @@ public class SignatureHandler {
         throw new IllegalArgumentException("Invalid public key format.");
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException("error reading public key", e);
     }
   }
 }
