@@ -1,29 +1,22 @@
 package com.example.receiver.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
 public final class FileUtils {
-  private FileUtils() {}
+  private FileUtils() {
+  }
 
   public static Resource readFileAsResource(String resourceName) {
 //    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 //    String folderPath = dateFormat.format(new Date());
-
     String projectRootPath = new File(System.getProperty("user.dir")).getPath();
     log.info("projectRootPath: {}", projectRootPath);
 //    String filePath = folderPath + File.separator + resourceName;

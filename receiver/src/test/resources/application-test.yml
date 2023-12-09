@@ -7,7 +7,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
-keys:
+signature:
   pairs:
     - id: 20231123
       path: 20231123/publicKey.pem
