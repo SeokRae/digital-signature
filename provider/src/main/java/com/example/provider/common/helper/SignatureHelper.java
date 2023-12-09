@@ -14,12 +14,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.util.Base64;
 
 @Slf4j
 @Component
 public final class SignatureHelper {
   public static final String ALGORITHM = "Ed25519";
+
+  private SignatureHelper() {}
 
   /**
    * 개인키 PEM 파일을 읽어 개인키 객체를 생성
@@ -45,6 +46,7 @@ public final class SignatureHelper {
 
   /**
    * 개인키를 통한 디지털 서명(signature) 생성
+   *
    * @param privateKey
    * @param message
    * @return

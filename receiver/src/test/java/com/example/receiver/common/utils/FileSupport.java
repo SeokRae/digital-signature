@@ -18,7 +18,7 @@ public final class FileSupport {
 
     String projectRootPath = new File(System.getProperty("user.dir")).getParent();
 
-    String filePath = folderPath + File.separator + resourceName;
+    String filePath = "20231205" + File.separator + resourceName;
     File file = new File(projectRootPath, filePath);
 
     log.info("{}", file.getAbsolutePath());

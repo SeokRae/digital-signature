@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Base64;
 
 @Slf4j
 public final class SignatureMakeHandler {
@@ -26,8 +27,11 @@ public final class SignatureMakeHandler {
       final Object readObject = pemParser.readObject();
       if (readObject instanceof PrivateKeyInfo) {
         PrivateKeyInfo privateKeyInfo = (PrivateKeyInfo) readObject;
+        log.info("privateKeyInfo: {}", Base64.getEncoder().encodeToString(privateKeyInfo.getEncoded()));
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-        return converter.getPrivateKey(privateKeyInfo);
+        PrivateKey privateKey = converter.getPrivateKey(privateKeyInfo);
+        log.info("privateKey: {}", Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+        return privateKey;
       } else {
         throw new IllegalArgumentException(String.format("Provided key is invalid: %s.", privateKeyResource.getFilename()));
       }
