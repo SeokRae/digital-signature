@@ -6,14 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.security.PublicKey;
 import java.util.Base64;
 
 @Slf4j
@@ -53,10 +49,10 @@ public final class SignatureVerifyHandler {
 		private Ed25519Verify initializeVerifier() throws IOException {
 			log.info("initializing verifier : {}", publicKey);
 			byte[] publicKeyData = Base64.getDecoder().decode(publicKey);
-        try (ASN1InputStream asn1InputStream = new ASN1InputStream(publicKeyData)) {
-            SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(asn1InputStream.readObject());
-            return new Ed25519Verify(subjectPublicKeyInfo.getPublicKeyData().getBytes());
-        }
+			try (ASN1InputStream asn1InputStream = new ASN1InputStream(publicKeyData)) {
+				SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(asn1InputStream.readObject());
+				return new Ed25519Verify(subjectPublicKeyInfo.getPublicKeyData().getBytes());
+			}
 		}
 		
 		public boolean build() {
