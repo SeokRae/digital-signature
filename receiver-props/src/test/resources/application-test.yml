@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: receiver-props-server
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+signature:
+  pairs:
+    - id: 20231123
+      publicKey: MCowBQYDK2VwAyEAS4iMOksLzDijLB+NGY5KGwJjnPxeP6XcZZ9kJbu/PGk=
+    - id: 20231204
+      publicKey: MCowBQYDK2VwAyEADRBmgSsv2hZzDQ6EfQR1pyXZLSzzo0RRxnWdMilZpBU=
+    - id: 20231205
+      publicKey: MCowBQYDK2VwAyEAwygQG0l57EGoUUjnHZtj73RMuLc132V4Ew8Ht6+m36w=
+
+logging:
+  level:
+    root: debug
+

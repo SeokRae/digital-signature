@@ -1,22 +1,13 @@
 package com.example.provider.common.utils;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 public final class FileUtils {
@@ -49,11 +40,8 @@ public final class FileUtils {
     }
   }
 
-  public static Resource readFileAsResource(String resourceName) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    String folderPath = dateFormat.format(new Date());
-
-    String filePath = folderPath + File.separator + resourceName;
+  public static Resource readFileAsResource(String path, String resourceName) {
+    String filePath = path + File.separator + resourceName;
     File file = new File(filePath);
 
     if (!file.exists()) {

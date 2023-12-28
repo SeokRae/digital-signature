@@ -7,7 +7,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 external:
-  echo: http://localhost:8082/v1/echo_test
+  echo: http://localhost:8083/v1/echo_test
 
 logging:
   level:
